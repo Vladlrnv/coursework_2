@@ -1,18 +1,20 @@
 class Vacancy:
 
-    __slots__ = ("name", "alternate_url", "salary", "requirement")
+    __slots__ = ("name", "alternate_url", "salary", "requirement", "description")
 
-    def __init__(self, name, alternate_url, salary, requirement):
+    def __init__(self, name, alternate_url, salary, requirement, description):
         self.name = name
         self.alternate_url = alternate_url
         self.salary = self.__validation_salary(salary)
         self.requirement = self.__validation_requirement(requirement)
+        self.description = self.__validation_description(description)
 
     def __str__(self):
         return (f"Вакансия: {self.name}\n"
                 f"Ссылка: {self.alternate_url}\n"
                 f"Зарплата: {self.salary}\n"
-                f"Требования: {self.requirement}\n")
+                f"Требования: {self.requirement}\n"
+                f"Описание: {self.description}\n")
 
     @staticmethod
     def __validation_salary(salary):
@@ -26,13 +28,26 @@ class Vacancy:
             return requirement
         return "Не указаны"
 
+    @staticmethod
+    def __validation_description(description):
+        if description:
+            return description
+        return "Не указано"
+
     @classmethod
     def cast_to_object_list(cls, vacancies: list):
         new_list = []
         for vacancy in vacancies:
             name = vacancy.get("name")
             alternate_url = vacancy.get("alternate_url")
-            requirement = vacancy.get("requirement")
+            if vacancy.get("requirement") is None:
+                requirement = "Не указаны"
+            else:
+                requirement = vacancy.get("requirement")
+            if vacancy.get("description") is None:
+                description = "Не указано"
+            else:
+                description = vacancy.get("description")
             if vacancy.get("salary") is None or vacancy.get("salary").get("from") is None:
                 salary = 0
             else:
@@ -40,7 +55,8 @@ class Vacancy:
             dict_vac = {"name": name,
                         "alternate_url": alternate_url,
                         "salary": salary,
-                        "requirement": requirement}
+                        "requirement": requirement,
+                        "description": description}
             new_list.append(dict_vac)
         return new_list
 
@@ -48,7 +64,8 @@ class Vacancy:
         return (f"Vacancy(name='{self.name}', "
                 f"cсылка='{self.alternate_url}', "
                 f"зарплата='{self.salary}', "
-                f"Требования='{self.requirement}')")
+                f"Требования='{self.requirement}',"
+                f"Описание= '{self.description}')")
 
     @classmethod
     def __isinstance_data(cls, other):
@@ -82,7 +99,7 @@ if __name__ == "__main__":
                   'salary': None, 'type': {'id': 'open', 'name': 'Открытая'},
                   'address': {'city': 'Алматы', 'street': 'бульвар Бухар Жырау',
                               'building': '26/1', 'lat': 43.232296, 'lng': 76.923259,
-                              'description': None, 'raw': 'Алматы, бульвар Бухар Жырау, 26/1',
+                              'description': "Пойдет", 'raw': 'Алматы, бульвар Бухар Жырау, 26/1',
                               'metro': None, 'metro_stations': [], 'id': '16504789'},
                   'response_url': None, 'sort_point_distance': None, 'published_at': '2024-10-18T15:33:27+0300',
                   'created_at': '2024-10-18T15:33:27+0300', 'archived': False, 'apply_alternate_url':
@@ -107,15 +124,15 @@ if __name__ == "__main__":
                   'accept_incomplete_resumes': True, 'experience': {'id': 'noExperience', 'name': 'Нет опыта'},
                   'employment': {'id': 'probation', 'name': 'Стажировка'}, 'adv_response_url': None,
                   'is_adv_vacancy': False, 'adv_context': None}])
-    ex2 = Vacancy('Web-программист - стажер', 'https://hh.ru/vacancy/108858682', 80000, None)
-    ex3 = Vacancy('Web-программист - стажер', 'https://hh.ru/vacancy/108858682', 180000, None)
+    ex2 = Vacancy('Web-программист - стажер', 'https://hh.ru/vacancy/108858682', 80000, None, None)
+    ex3 = Vacancy('Web-программист - стажер', 'https://hh.ru/vacancy/108858682', 180000, None, "Строчка")
     print(ex)
-    print(repr(ex2))
-    print(ex2)
-    print(ex2 == ex3)
-    print(ex2 < ex3)
-    print(ex2 <= ex3)
-    print(ex2 != ex3)
-    print(ex2 > ex3)
-    print(ex2 >= ex3)
+    # print(repr(ex2))
+    # print(ex3)
+    # print(ex2 == ex3)
+    # print(ex2 < ex3)
+    # print(ex2 <= ex3)
+    # print(ex2 != ex3)
+    # print(ex2 > ex3)
+    # print(ex2 >= ex3)
 
