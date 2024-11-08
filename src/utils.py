@@ -1,1 +1,1 @@
-# def filter_vacancies(vacancies_list, filter_words):
+def filter_vacancies(vacancies_list, filter_words):

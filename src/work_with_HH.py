@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
-
 import requests
 from abc import ABC, abstractmethod
 from requests import RequestException
+
+BASE_URL = 'https://api.hh.ru/vacancies'
 
 
 class Parser(ABC):
@@ -24,7 +24,7 @@ class HeadHunterAPI(Parser):
     """
 
     def __init__(self):
-        self.__url = 'https://api.hh.ru/vacancies'
+        self.__url = BASE_URL
         self.__headers = {'User-Agent': 'HH-User-Agent'}
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
         self.__vacancies = []
@@ -51,13 +51,10 @@ class HeadHunterAPI(Parser):
             self.__vacancies.extend(vacancies)
             self.__params['page'] += 1
         return self.__vacancies
-            # with open("../data/data.json", "w") as f:
-            #     json.dump(vacancies, f)
 
 
 if __name__ == "__main__":
     api = HeadHunterAPI()
     api.load_vacancies("Python")
     vacans = api.vacancies
-    print(vacans[0])
 
