@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import requests
 from abc import ABC, abstractmethod
+
+import requests
 from requests import RequestException
 
 BASE_URL = 'https://api.hh.ru/vacancies'
@@ -11,10 +12,6 @@ class Parser(ABC):
     @abstractmethod
     def load_vacancies(self, keyword):
         pass
-
-    # @abstractmethod
-    # def __connect(self):
-    #     pass
 
 
 class HeadHunterAPI(Parser):
@@ -57,4 +54,3 @@ if __name__ == "__main__":
     api = HeadHunterAPI()
     api.load_vacancies("Python")
     vacans = api.vacancies
-
